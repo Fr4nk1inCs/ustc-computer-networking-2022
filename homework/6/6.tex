@@ -1,0 +1,95 @@
+\documentclass[11pt]{homework}
+
+\newcommand{\hwname}{傅申}
+\newcommand{\hwid}{PB20000051}
+\newcommand{\hwtype}{计算机网络作业}
+\newcommand{\hwnum}{6}
+
+\usepackage{enumerate}
+
+\begin{document}
+\maketitle
+% Your content
+\questionnumber{5}
+\question{
+    $r = 4$, $R$ 为 $D \cdot 2^{4} = 10101010100000$ 除以 $G = 10011$ 的余数, 即
+    $R = 0100$, 其中商为 1011011100.
+}
+
+\questionnumber{8}
+\question{
+    \begin{alphaparts}
+        \questionpart{} 要使 $Np{(1-p)}^{N-1}$ 最大, 则有
+        \[
+            \frac{ \partial }{ \partial p } Np{(1-p)}^{N-1} = N {(1 - p)}^{N-2}
+            ((1 - p) - (N - 1)p) = 0 \implies p = \frac{ 1 }{ N }
+        \]
+        即使这个表达式最大化的值为 $1 / N$.
+        \questionpart{} 效率为
+        \[
+            \lim_{N\to \infty} Np{(1 - p)}^{N - 1} = \lim_{N\to \infty}
+            {\left( 1 - \frac{ 1 }{ N }\right)}^{N - 1} =
+            \frac{ 1 }{ \mathrm{e} }
+        \]
+    \end{alphaparts}
+}
+
+\questionnumber{11}
+\question{
+    \begin{alphaparts}
+        \questionpart{} 设 $p_{X}$ 是节点 $X$ 在时隙中成功传输帧的概率, 则有
+        $p_{X} = {(1 - p)}^{3}p$; 设 $p_{fail}$ 为没有节点成功传输帧的概率, 因为
+        不会出现多个节点同时成功传输帧的情况, 所以 $p_{fail} = 1 - p_{A} - p_{B}
+            - p_{C} - p_{D} = 1 - 4{(1 - p)}^{3}p$, 因此节点 $A$ 在时隙 5 中首先
+        成功的概率为
+        \[
+            P = p_{fail}^{4}p_{A} = {(1 - 4{(1 - p)}^{3}p)}^{4} {(1 - p)}^{3}p
+        \]
+        \questionpart{} 不同的节点不会同时成功, 因此某个节点在时隙 4 中成功的概
+        率即为
+        \[
+            P = p_{succ} = 1 - p_{fail} = 4{(1 - p)}^{3}p
+        \]
+        \questionpart{} 在时隙 3 中出现首个成功的概率为
+        \[
+            P = p_{fail}^{2}p_{succ} = 4{(1 - 4{(1 - p)}^{3}p)}^{2}
+                {(1 - p)}^{3}p
+        \]
+        \questionpart{} 效率为 $E = p_{succ} = 4p{(1 - p)}^{3}$.
+    \end{alphaparts}
+}
+
+\questionnumber{23}
+\question{
+    当所有节点都以 100Mbps 的速率发送分组时, 总聚合吞吐量最大, 为 1100Mbps.
+}
+
+\newpage
+
+\questionnumber{24}
+\question{
+    因为 3 台连接各系的交换机被集线器所代替, 所以这每个系内的 3 台主机位于同一个
+    冲突域, 任一时刻最多允许一台主机发送分组, 系内最大聚合带宽为 100Mbps, 而两台
+    服务器仍能以 100Mbps 速率发送分组, 因此最大总聚合带宽为 500Mbps.
+}
+
+\questionnumber{25}
+\question{
+    所有交换机都被集线器代替, 因此所有节点都位于同一个冲突域, 任一时刻最多允许一
+    个节点发送分组, 最大总聚合带宽为 100Mbps.
+}
+
+\questionnumber{26}
+\question{
+    \begin{enumerate}[label = (\roman*)]
+        \item 交换机的交换机表会添加节点 B 的表项, 因为其没有节点 E 的表项, 所以
+              交换机将广播该帧, 将其发往 A, C, D, E, F 节点前的链路.
+        \item 交换机表会添加节点 E 的表项, 因为其记录了节点 B 的表项, 所以帧会被
+              转发到 B 节点前的链路.
+        \item 交换机表会添加节点 A 的表项, 因为其记录了节点 B 的表项, 所以帧会被
+              转发到 B 节点前的链路.
+        \item 交换机表会更新节点 B 对应的表项, 因为其记录了节点 A 的表项, 所以帧
+              会被转发到 A 节点前的链路.
+    \end{enumerate}
+}
+\end{document}

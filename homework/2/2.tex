@@ -1,0 +1,199 @@
+\documentclass[boxes]{homework}
+
+% This is a slightly-more-than-minimal document that uses the homework class.
+% See the README at http://git.io/vZWL0 for complete documentation.
+
+\name{傅申 PB20000051}        % Replace (Your Name) with your name.
+\term{2022 秋}     % Replace (Current Term) with the current term.
+\course{计算机网络}    % Replace (Course Name) with the course name.
+\hwnum{2}          % Replace (Number) with the number of the homework.
+\hwname{作业}
+\problemname{P}
+\solutionname{解:}
+
+% Load any other packages you need here.
+\usepackage[
+    a4paper,
+    top = 2.54cm,
+    bottom = 2.54cm,
+    left = 1.91cm,
+    right = 1.91cm,
+    includeheadfoot
+]{geometry}
+\fancyfootoffset{0pt} % make fancyhdr work properly
+\usepackage{ctex}
+
+\begin{document}
+%%%% P1 %%%%
+\begin{problem}
+是非判断题
+\begin{parts}
+    \part\label{prob:1.a}
+    假设用户请求由一些文本和 3 幅图像组成的 Web 页面. 对于这个页面, 客户端将发送
+    一个请求报文并接收 4 个响应报文.
+    \part\label{prob:1.b}
+    两个不同的 Web 页面可以通过同一个持续连接发送.
+    \part\label{prob:1.c}
+    在浏览器和初始服务器之间使用非持续连接的话, 一个 TCP 报文段是可能携带两个不
+    同的 HTTP 服务请求报文的.
+    \part\label{prob:1.d}
+    在 HTTP 响应报文中的 Date: 首部指出了该响应对象最后一次修改的时间.
+    \part\label{prob:1.e}
+    HTTP 响应报文不会具有空的报文体.
+\end{parts}
+\end{problem}
+\begin{solution}
+    \ref{prob:1.a} 错误, 客户将发送 4 个请求报文并接收 4 个响应报文
+
+    \ref{prob:1.b} 正确.
+
+    \ref{prob:1.c} 错误, 每个 TCP 连接只传输一个请求报文和一个响应报文.
+
+    \ref{prob:1.c} 错误, Date: 首部行指示服务器产生并发送该响应报文的日期和时间.
+
+    \ref{prob:1.e} 错误, 例如 HEAD 方法的响应报文就没有报文体.
+\end{solution}
+
+%%%% P3 %%%%
+\problemnumber{3}
+\begin{problem}
+考虑一个要获取给定 URL 的 Web 文档的 HTTP 客户. 该 HTTP 服务器的 IP 地址开始时并
+不知道. 在这种情况下, 除了 HTTP 外, 还需要什么运输层和应用层协议?
+\end{problem}
+\begin{solution}
+    除了 HTTP, 应用层还需要 DNS 解析服务器的 IP 地址. 运输层需要 TCP 和 UDP\@.
+\end{solution}
+
+%%%% P7 %%%%
+\problemnumber{7}
+\begin{problem}
+\label{prob:7}
+假定你在浏览器中点击一条超链接获得 Web 页面. 相关联的 URL 的 IP 地址没有缓存在本
+地主机上, 因此必须使用 DNS lookup 以获得该 IP 地址. 如果主机从 DNS 得到 IP 地址
+之前已经访问了 $n$ 个 DNS 服务器; 相继产生的 RTT 依次为
+${\mathrm{RTT}}_{1}, \cdots, {\mathrm{RTT}}_{n}$. 进一步假定与该链路相关的 Web
+页面只包含一个对象, 即由少量的 HTML 文本组成. 另 $\mathrm{RTT}_{0}$ 表示本地主机
+和包含对象的服务器之间的 RTT 值. 假定该对象的传输时间为零, 则从该客户点击该超链
+接到它接收到该对象需要多长时间?
+\end{problem}
+\begin{solution}
+    查询 IP 地址需要的时间为 $\mathrm{RTT}_{1} + \cdots+ \mathrm{RTT}_{n}$. 当
+    IP 地址查询完成后, 客户需要 $\mathrm{RTT}_{0}$ 和服务器建立 TCP 连接, 再加上
+    请求和响应需要的 $\mathrm{RTT}_{0}$, 总共需要的时间为
+    \begin{equation}
+        T = 2 \mathrm{RTT}_{0} + \mathrm{RTT}_{1} + \mathrm{RTT}_{2} + \cdots +
+        \mathrm{RTT}_{n}
+    \end{equation}
+\end{solution}
+
+%%%% P8 %%%%
+\begin{problem}
+参照习题~\hyperref[prob:7]{P7}, 假定在同一服务器上某 HTML 文件引入了 8 个非常小
+的对象. 忽略发送时间, 在下列情况下需要多长时间:
+\begin{parts}
+    \part\label{prob:8.a}
+    没有并行 TCP 连接的非持续 HTTP\@.
+    \part\label{prob:8.b}
+    配置有 5 个并行 TCP 连接的非持续 HTTP\@.
+    \part\label{prob:8.c}
+    持续连接.
+\end{parts}
+\end{problem}
+\begin{solution}
+    \ref{prob:8.a} 需要的时间为
+    \begin{equation}
+        \begin{aligned}
+            T
+             & = \underbrace{\mathrm{RTT}_{1} + \cdots + \mathrm{RTT}_{n} }_{
+                \text{查询 IP 地址}} + \underbrace{ 2 \cdot \mathrm{RTT}_{0} }
+            _{\text{请求 HTML 文件}} + \underbrace{ 8 \cdot
+            2 \mathrm{RTT}_{0} }_{\text{请求 8 个对象}}                       \\
+             & = 18 \mathrm{RTT}_{0} + \mathrm{RTT}_{1} + \cdots +
+            \mathrm{RTT}_{n}
+        \end{aligned}
+    \end{equation}
+
+    \ref{prob:8.b} 需要的时间为
+    \begin{equation}
+        \begin{aligned}
+            T
+             & = \underbrace{\mathrm{RTT}_{1} + \cdots + \mathrm{RTT}_{n} }_{
+                \text{查询 IP 地址}} + \underbrace{ 2 \cdot \mathrm{RTT}_{0} }
+            _{\text{请求 HTML 文件}} + \underbrace{ 2 \cdot
+            2 \mathrm{RTT}_{0} }_{\text{两轮并行 TCP 请求 8 个对象}}          \\
+             & = 6 \mathrm{RTT}_{0} + \mathrm{RTT}_{1} + \cdots +
+            \mathrm{RTT}_{n}
+        \end{aligned}
+    \end{equation}
+
+    \ref{prob:8.c} 若为非流水线方式, 需要的时间为
+    \begin{equation}
+        \begin{aligned}
+            T
+             & = \underbrace{\mathrm{RTT}_{1} + \cdots + \mathrm{RTT}_{n} }_{
+                \text{查询 IP 地址}}
+            + \underbrace{ \mathrm{RTT}_{0} }_{\text{发起连接}}
+            + \underbrace{ 9 \mathrm{RTT}_{0} }_{
+            \text{请求并接收 HTML 文件与其他对象}}                            \\
+             & = 10 \mathrm{RTT}_{0} + \mathrm{RTT}_{1} + \cdots +
+            \mathrm{RTT}_{n}
+        \end{aligned}
+    \end{equation}
+    若为流水线方式, 需要的时间为
+    \begin{equation}
+        \begin{aligned}
+            T
+             & = \underbrace{\mathrm{RTT}_{1} + \cdots + \mathrm{RTT}_{n} }_{
+                \text{查询 IP 地址}}
+            + \underbrace{ \mathrm{RTT}_{0} }_{\text{发起连接}}
+            + \underbrace{ \mathrm{RTT}_{0} }_{\text{请求并接收 HTML 文件}}
+            + \underbrace{ \mathrm{RTT}_{0} }_{\text{请求并接收 8 个对象}}    \\
+             & = 3 \mathrm{RTT}_{0} + \mathrm{RTT}_{1} + \cdots +
+            \mathrm{RTT}_{n}
+        \end{aligned}
+    \end{equation}
+\end{solution}
+
+%%%% P9 %%%%
+\begin{problem}
+考虑图 2--12, 其中有一个机构的网络和因特网相连. 假定对象的平均长度都为 850 000
+比特, 从这个机构网的浏览器到初始服务器的平均请求率是每秒 16 个请求. 还假定接入链
+路的因特网一侧的路由器转发一个 HTTP 请求开始, 到接收到其响应的平均时间是 3 秒.
+将总的平均响应时间建模为平均接入时延 (即从因特网路由器到机构路由器的时延) 和平均
+因特网时延之和. 对于平均接入时延, 使用 $\Delta / (1 - \Delta\beta)$, 式中
+$\Delta$ 是跨越接入链路发送一个对象的平均时间, $\beta$ 是对象对该接入链路的平均
+到达率.
+\begin{parts}
+    \part\label{prob:9.a}
+    求出总的平均响应时间.
+    \part\label{prob:9.b}
+    现在假定在这个机构 LAN 中安装了一个缓存器. 假定命中率为 0.4, 求出总的响应时
+    间.
+\end{parts}
+\end{problem}
+\begin{solution}
+    \ref{prob:9.a} 跨越接入链路发送一个对象的平均时间为
+    \begin{equation}
+        \Delta = \frac{ L }{ R } = \frac{ 850000\text{bits} }
+        { 15\text{Mbps} } = \frac{ 17 }{ 300 } \text{s}
+    \end{equation}
+    因此平均接入时延为
+    \begin{equation}
+        \frac{ \Delta }{ 1 - \Delta\beta } = \frac{ 17 / 300 }{ 1 - 16 \cdot 17
+            / 300} = \frac{ 17 }{ 28 }\text{s} \approx 0.607\text{s}
+    \end{equation}
+    所以平均响应时间为 3.607 秒.
+
+    \ref{prob:9.b} 因为命中率为 0.4, 因此只有 60\% 的请求需要从因特网路由器到机
+    构路由器, 平均到达率变为原来的 60\%, 平均接入时延变为
+    \begin{equation}
+        \frac{ \Delta }{ 1 - \Delta\beta } = \frac{ 17 / 300 }{ 1 - 9.6 \cdot 17
+            / 300} \approx 0.124\text{s}
+    \end{equation}
+    因此平均响应时间变为
+    \begin{equation}
+        40\% \times 0 + 60\% \times 3.124\text{s} = 1.87\text{s}
+    \end{equation}
+\end{solution}
+
+\end{document}

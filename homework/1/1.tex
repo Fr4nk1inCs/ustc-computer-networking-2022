@@ -1,0 +1,275 @@
+\documentclass[boxes]{homework}
+
+% This is a slightly-more-than-minimal document that uses the homework class.
+% See the README at http://git.io/vZWL0 for complete documentation.
+
+\name{傅申 PB20000051}        % Replace (Your Name) with your name.
+\term{2022 秋}     % Replace (Current Term) with the current term.
+\course{计算机网络}    % Replace (Course Name) with the course name.
+\hwnum{1}          % Replace (Number) with the number of the homework.
+\hwname{作业}
+\problemname{P}
+\solutionname{解:}
+
+% Load any other packages you need here.
+\usepackage[
+    a4paper,
+    top = 2.54cm,
+    bottom = 2.54cm,
+    left = 1.91cm,
+    right = 1.91cm,
+    includeheadfoot
+]{geometry}
+\fancyfootoffset{0pt} % make fancyhdr work properly
+\usepackage{ctex}
+
+\begin{document}
+%%%% P9 %%%%
+\problemnumber{9}
+\begin{problem}
+考虑在 1.3 节 ``分组交换与电路交换的对比'' 的讨论中, 给出了一个具有一条 1Mbps
+链路的例子. 用户在忙时以 100kbps 的速率产生数据, 但忙时仅以 $p = 0.1$ 的概率产
+生数据. 假定用 1Gbps 链路替代 1Mbps 的链路.
+\begin{parts}
+    \part\label{prob:9.a}
+    当采用电路交换技术时, 能被同时支持的最大用户数量 $N$ 是多少?
+    \part\label{prob:9.b}
+    现在考虑分组交换和有 $M$ 个用户的情况. 给出多于 $N$ 个用户发送数据的概率公
+    式 (用 $p$, $M$, $N$ 表示).
+\end{parts}
+\end{problem}
+\begin{solution}
+    \ref{prob:9.a} 支持的最大用户量为
+    \begin{equation}
+        N = \frac{ 1\text{Gbps} }{ 100\text{kbps} } = 1 \times 10^{4}
+    \end{equation}
+
+    \ref{prob:9.b} 有 $n$ 个用户发送数据的概率为
+    $\begin{pmatrix}M \\ n\end{pmatrix} p^{n} {\left( 1 - p\right)}^{M - n}$.
+    所以多于 $N$ 个用户发送数据的概率为
+    \begin{equation}
+        \sum_{n = N + 1}^{M}
+        \begin{pmatrix}
+            M \\
+            n
+        \end{pmatrix}
+        p^{n} {\left( 1 - p\right)}^{M - n}
+    \end{equation}
+\end{solution}
+
+%%%% P10 %%%%
+\problemnumber{10}
+\begin{problem}
+考虑一个长度为 $L$ 的分组从端系统 A 开始, 经 3 段链路传送到目的端系统. 令
+$d_{i}$, $s_{i}$ 和 $R_{i}$ 表示链路 $i$ 的长度, 传播速度和传输速率
+($i = 1, 2, 3$). 该分组交换机对每个分组的时延为 $d_{\text{proc}}$. 假定没有排队
+时延, 用 $d_{i}$, $s_{i}$, $R_{i}$ ($i = 1, 2, 3$) 和 $L$ 表示, 该分组总的端到
+端时延是什么? 现在假定该分组是 1500 字节, 在所有三条链路上的传播速率是 2Mbps,
+分组交换机的处理时延是 3ms, 第一段链路的长度是 5000km, 第二段链路的长度是
+4000km, 并且最后一段链路的长度是 3000km. 对于这些值, 该端到端时延为多少?
+\end{problem}
+\begin{solution}
+    每条链路的传播时延为 $\dfrac{ d_{i} }{ s_{i} }$, 传输时延为
+    $\dfrac{ L }{ R_{i} }$. 3 段链路之间有 2 个交换机, 总处理时延为 $2
+        d_{\text{proc}}$. 因此总的端到端时延为
+    \begin{equation}
+        d_{\text{nodal}} = \dfrac{ d_{1} }{ s_{1} } + \dfrac{ d_{2} }{ s_{2} } +
+        \dfrac{ d_{3} }{ s_{3} } + \dfrac{ L }{ R_{1} } + \dfrac{ L }{ R_{2} } +
+        \dfrac{ L }{ R_{3} } + 2 d_{\text{proc}}
+    \end{equation}
+    代入第二问的数据, 得到段对段时延为
+    \begin{equation}
+        d_{\text{nodal}} = \frac{ 12000\text{km} }{ 300000\text{km/s} }
+        + 3 \times \frac{ 1500\text{Bytes} }{ 2\text{Mbps} } + 2 \times 3
+        \text{ms} = \left( 40 + 18 + 6\right)\text{ms} = 64\text{ms}
+    \end{equation}
+\end{solution}
+
+%%%% P13 %%%%
+\problemnumber{13}
+\begin{problem}
+\begin{parts}
+    \part\label{prob:13.a}
+    假定有 $N$ 个分组同时到达一条当前没有分组传输或者排队的链路. 每个分组长为
+    $L$, 链路传输速率为 $R$. 对 $N$ 个分组而言, 其平均排队时延是多少?
+    \part\label{prob:13.b}
+    现在假定每隔 $LN/R$ 秒有 $N$ 个分组同时到达链路. 一个分组的平均排队时延是多
+    少?
+\end{parts}
+\end{problem}
+\begin{solution}
+    \ref{prob:13.a} 第 $i$ 个传输的分组的排队时延为 $(i - 1) \dfrac{ L }{ R }$,
+    所以平均排队时延为
+    \begin{equation}
+        \frac{ 1 }{ N } \sum_{i = 1}^{N} (i - 1) \frac{ L }{ R } =
+        \frac{ (N - 1)L }{ 2R }
+    \end{equation}
+
+    \ref{prob:13.b} 由于传输所有 $N$ 个分组的时间就是 $\dfrac{ LN }{ R }$, 所以
+    一个分组的平均排队时延与上一问~\ref{prob:13.a} 的结果相同, 即
+    $\dfrac{ (N - 1)L }{ 2R }$.
+\end{solution}
+
+%%%% P21 %%%%
+\problemnumber{21}
+\begin{problem}
+考虑图 1--19b. 现在假定在服务器和客户之间有 $M$ 条路径. 任两条路径都不共享任何
+链路. 路径 $k$ ($k = 1, \cdots, M$) 由传输速率为 $R^k_{1}, R^k_{2}, \cdots,
+    R^k_{N}$ 的 $N$ 条链路组成. 如果服务器仅能够使用一条路径向客户发送数据,
+则该服务器能够取得的最大吞吐量是多少?
+\end{problem}
+\begin{solution}
+    因为只能使用一条路径, 所以服务器的最大吞吐量为
+    $\max_{k = 1, \cdots, M} \left\{ \min
+        \left\{ R^{k}_{1}, R^{k}_{2}, \ldots, R^{k}_{N} \right\}\right\}$.
+\end{solution}
+
+%%%% P22 %%%%
+\problemnumber{22}
+\begin{problem}
+考虑图 1--19b. 假定服务器与客户之间的每条链路的丢包概率为 $p$, 且这些链路的丢包
+率是独立的. 一个 (由服务器发送的) 分组成功地被接收方收到的概率是多少? 如果在从
+服务器到客户端的路径上分组丢失了, 则服务器将重传该分组. 平均来说, 为了使客户成
+功地接收该分组, 服务器将要重传该分组多少次?
+\end{problem}
+\begin{solution}
+    一个分组成功地被接收方受到的概率就是分组在每条链路上都不丢包的概率, 即
+    ${\left( 1 - p\right)}^{N}$. 而为了使客户成功地接收该分组, 服务器将要重传该
+    分组的平均次数为
+    \begin{equation}
+        \sum_{i = 1}^{\infty} i \left(1 - \left( 1 - p\right)^{N}\right)^{i - 1}
+        \left( 1 - p\right)^{N} - 1 =
+        \frac{ 1 }{ {\left( 1 - p\right)}^{N} } - 1
+    \end{equation}
+\end{solution}
+
+%%%% P25 %%%%
+\problemnumber{25}
+\begin{problem}
+假定两台主机 A 和 B 相隔 20 000km, 由一条直接的 $R = 2\text{Mbps}$ 的链路相连.
+假定跨越该链路的传播速率是 $2.5 \times 10^{8}\text{m/s}$.
+\begin{parts}
+    \part\label{prob:25.a}
+    计算带宽--时延积 $R \cdot t_{\text{prop}}$.
+    \part\label{prob:25.b}
+    考虑从主机 A 到主机 B 发送一个 800 000 比特的文件. 假定该文件作为一个大的报
+    文连续发送. 在任何给定的时间, 在链路上具有的比特数量最大值是多少?
+    \part\label{prob:25.c}
+    给出带宽--时延积的一种解释.
+    \part\label{prob:25.d}
+    在该链路上一个比特的宽度 (以米计) 是多少? 它比一个足球场更长吗?
+    \part\label{prob:25.e}
+    用传播速率 $s$, 带宽 $R$ 和链路 $m$ 的长度表示, 推导出一个比特宽度的一般表
+    示式.
+\end{parts}
+\end{problem}
+\begin{solution}
+    \ref{prob:25.a} 带宽--时延积为
+    \begin{equation}
+        R \cdot t_{\text{prop}} = 2\text{Mbps} \times
+        \frac{ 20000\text{km} }{ 2.5 \times 10^{5} \text{km/s} } =
+        160000\text{bits}
+    \end{equation}
+
+    \ref{prob:25.b} 当主机 A 还在发送文件, 主机 B 还在接收文件时, 在链路上具有的
+    比特数量最大. 考虑主机 B 此时正在接收的比特, 它是在 $t_{\text{prop}}$ 之前
+    从主机 A 发送的, 因此此时链路上共具有 $R \times t_{\text{prop}} = 160000$
+    比特. 即链路上具有的比特数量最大值为 160000.
+
+    \ref{prob:25.c} 带宽--时延积表示链路上具有的最大比特数量.
+
+    \ref{prob:25.d} 一个比特的宽度为 $20000\text{km}/160000= 125$m,
+    标准足球场的长度为 100m, 因此一个比特的宽度比一个足球场更长.
+
+    \ref{prob:25.e} 一个比特的宽度一般表达式为
+    \begin{equation}
+        \frac{ m }{ R \dfrac{ m }{ s } } = \frac{ s }{ R }
+    \end{equation}
+\end{solution}
+
+%%%% P31 %%%%
+\problemnumber{31}
+\begin{problem}
+在包括因特网的现代分组减缓往中, 源主机将长应用层报文 (如一个图像或音乐文件) 分
+段为较小的分组并向网络发送. 接收方则将这些分组重新装配为初始报文. 我们称这个过
+程为\textbf{报文分段}. 图 1--27 显示了一个报文在报文不分段或报文分段情况下的端
+到端传输. 考虑一个长度为 $8 \times 10^{6}$ 比特的报文, 它在图 1--27 中从源发送
+到目的地. 假定在该图中的每段链路是 2Mbps. 忽略传播, 排队和处理时延.
+\begin{parts}
+    \part\label{prob:31.a}
+    考虑从源到目的地发送该报文且\textbf{没有}报文分段. 从源主机到第一台分组交换
+    机移动报文需要多长时间? 记住, 每台交换机均使用存储转发分组交换, 从源主机移
+    动该报文到目的主机需要多长时间?
+    \part\label{prob:31.b}
+    现在假定该报文被分段为 800 个分组, 每个分组 10 000 比特长. 从源主机移动第一
+    个分组到第一台交换机需要多长时间? 从第一台交换机发送第一个分组到第二台交换
+    机, 从源主机发送第二个分组到第一台交换机各需要多长时间? 什么时候第二个分组
+    能被第一台交换机全部收到?
+    \part\label{prob:31.c}
+    当进行报文分段时, 从源主机向目的主机移动该文件需要多长时间? 将该结果与
+    \hyperref[prob:31.a]{(a)} 的答案进行比较并解释之.
+    \part\label{prob:31.d}
+    除了减小时延外, 使用报文分段还有什么原因?
+    \part\label{prob:31.e}
+    讨论报文分段的缺点.
+\end{parts}
+\end{problem}
+\begin{solution}
+    \ref{prob:31.a} 从源主机到第一台分组交换机移动报文需要
+    \begin{equation}
+        \frac{ 8 \times 10^{6} \text{bits} }{ 2\text{Mbps} } = 4 \text{s}
+    \end{equation}
+    从源主机到目的主机移动该报文需要
+    \begin{equation}
+        4\text{s} \times 3 = 12 \text{s}
+    \end{equation}
+
+    \ref{prob:31.b} 从源主机移动第一个分组到第一台交换机需要
+    \begin{equation}
+        \frac{ 10000 \text{bits} }{ 2\text{Mbps} } = 5\text{ms}
+    \end{equation}
+    从第一台交换机发送第一个分组到第二台交换机, 从源主机发送第二个分组到第一台
+    交换机都需要 5ms, 计算过程与上面相同. 在开始发送 $5\text{ms}\times 2 = 10
+        \text{ms}$ 后第二个分组能被第一台交换机全部收到.
+
+    \ref{prob:31.c} 当进行报文分段时, 从源主机向目的主机移动该文件需要
+    \begin{equation}
+        \underbrace{ 3\times 5\text{ms} }_{\text{第一个分组到达目的主机}} +
+        \underbrace{ 799 \times 5\text{ms} }_{\text{之后每隔 5ms 都有一个分组到
+                达目的主机}} = 4.01\text{s}
+    \end{equation}
+    这个结果远小于没有报文分段时的 12s, 说明进行报文分段能有效减少时延.
+
+    \ref{prob:31.d} 使用报文分段还能降低丢包的代价, 当发生丢包时, 只需要重传对
+    应的分组即可, 不需要重传整个报文.
+
+    \ref{prob:31.e} 目的主机必须重新排列整合接收到的所有分段才能得到整个文件.
+    其次, 因为首部字段的长度一般与分段长度无关, 所以在进行分段时会增加首部字段
+    的长度, 传输效率降低.
+\end{solution}
+
+%%%% P33 %%%%
+\problemnumber{33}
+\begin{problem}
+考虑从主机 A 到主机 B 发送应该 $F$ 比特的大文件. A 和 B 之间有三段链路 (和两台
+交换机), 并且该链路不拥塞 (即没有排队时延). 主机 A 将该文件分为每个为 $S$ 比特
+的报文段, 并为每个报文段增加一个 80 比特的首部, 形成 $L = 80 + S$ 比特的分组.
+每条链路的传输速率为 $R$ bps. 求出从 A 到 B 移动该文件时延最小的值 $S$. 忽略传
+播时延.
+\end{problem}
+\begin{solution}
+    假设文件被分为 $N$ 段, 即 $S = F / N$, 则从源主机移动第一个分段需要的时间
+    $t_{0}$ 为
+    \begin{equation}
+        t_{0} = \frac{ L }{ R } = \frac{ 80 + \dfrac{ F }{ N } }{ R }
+    \end{equation}
+    那么从 A 到 B 移动该文件的总时延 $t$ 为
+    \begin{equation}
+        t = 3t_{0} + (N - 1)t_{0} = (N + 2) \frac{ 80 + \dfrac{ F }{ N } }{ R }
+        = \frac{ 1 }{ R } \left( 80N + \frac{ 2F }{ N } + 160 + F\right)
+    \end{equation}
+    当 $N = \sqrt{ \dfrac{ 2F }{ 80 } } = \sqrt{ \dfrac{ F }{ 40 } }$ 时, 上式
+    取得最小值 $\dfrac{ F + 8 \sqrt{10F} + 160 }{ R }$, 即从 A 到 B 移动该文件时
+    延最小的值 $S = 2 \sqrt{10F}$.
+\end{solution}
+\end{document}

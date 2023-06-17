@@ -1,0 +1,185 @@
+\documentclass[11pt]{homework}
+
+\newcommand{\hwname}{傅申}
+\newcommand{\hwid}{PB20000051}
+\newcommand{\hwtype}{计算机网络作业}
+\newcommand{\hwnum}{3}
+
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows}
+\begin{document}
+\maketitle
+% Your content
+\questionnumber{15}
+\question
+发送一个分组进入 1Gbps 链路的时间为
+\begin{equation}
+    \frac{ L }{ R } = \frac{ 1500 \times 8 }{ 10^{9} } \text{s} = 12 \mu\text{s}
+\end{equation}
+因此, 要使该信道的利用率超过 90\%, 窗口长度 $N$ 应该满足下面的不等式
+\begin{equation}
+    \frac{ 12 N }{ 30 \times 10^{3} + N } \geqslant 90\%
+\end{equation}
+解得 $N\geqslant 2432$.
+
+\questionnumber{22}
+\question
+\begin{alphaparts}
+    \questionpart 发送方窗口为 4, 而接收方已经接受了序号为 $k - 1$ 的报文, 所以
+    序号为 $k - 1$ 的报文已经被发送方发送, 且序号为 $k$ 的报文还未到达接收方,
+    故发送方还未接收 ACK $k$. 因此发送方窗口的基序号最小值为 $k - 4$, 最大值为
+    $k$. 发送方窗口的基序号可能为 $k - 4$, $k - 3$, $k - 2$, $k - 1$, $k$,
+    分别对应 ACK $k - 4$/$k - 3$/$k - 2$/$k - 1$ 及其之后的 ACK 未到达发送方和
+    ACK $k - 1$ 已到达发送方的情况. 若窗口内序号小于 0 或大于 1023, 则这些序号
+    应对 1024 取模处理.
+    \questionpart 发送方窗口为 4, 而接收方已经接受了序号为 $k - 1$ 的报文, 所以
+    序号为 $k - 1$ 的报文已经被发送方发送, 因此已经被接收的 ACK 序号至少为
+    $k - 5$. 当前传播回发送方的所有可能报文中 ACK 字段可能为 $k - 4$, $k - 3$,
+    $k - 2$, $k - 1$.
+\end{alphaparts}
+
+\question
+对于 GBN 协议, 允许发送方窗口长度最大为序号空间的大小, 即 $k$. 对于 SR 协议, 窗
+口长度必须小于或等于序号空间大小的一半, 即 $k / 2$.
+
+\questionnumber{25}
+\question
+\begin{alphaparts}
+    \questionpart 在 TCP 中, 应用程序数据先被引导到发送缓存中, 从而脱离了应用程
+    序的控制, 这些数据可能被分块取出并放入报文段. 而在 UDP 中, 应用程序数据在附
+    加上报头形成报文后直接交给网络层. 因此在 UDP 中应用程序对在报文段中发送什么
+    数据拥有更多的控制.
+    \questionpart TCP 拥有拥塞控制和流量控制机制, 报文的发送时间受多种因素制约;
+    但 UDP 控制没有这些机制, 应用程序生成数据后报文可直接被发送.
+\end{alphaparts}
+
+\questionnumber{27}
+\question
+\begin{alphaparts}
+    \questionpart 序号为 207, 源端口号为 302, 目的端口号为 80.
+    \questionpart 确认号为 207, 源端口号为 80, 目的端口号为 302.
+    \questionpart 确认号为 127.
+    \questionpart 如下
+    \begin{center}
+        \begin{tikzpicture}[>=latex]
+            \coordinate (A) at (0, 9.5);
+            \coordinate (B) at (4, 9.5);
+            \coordinate (C) at (0, 2);
+            \coordinate (D) at (4, 2);
+            \draw (A) node[above]{主机 A};
+            \draw (B) node[above]{主机 B};
+            \draw[->] (A) -- (C);
+            \draw[->] (B) -- (D);
+
+            \coordinate (A1) at (0, 9);
+            \coordinate (B1) at (4, 8);
+            \coordinate (ACK1) at (2, 7);
+            \draw (ACK1) node[left]{X};
+            \draw (A1) node[left] {seq=127, 80 字节};
+            \draw (B1) node[right] {ack=207};
+            \draw[->] (A1) -- (B1);
+            \draw[->] (B1) -- (ACK1);
+
+            \coordinate (A2) at (0, 8);
+            \coordinate (B2) at (4, 7);
+            \coordinate (ACK2) at (0, 5);
+            \draw (A2) node[left] {seq=207, 40 字节};
+            \draw (B2) node[right] {ack=247};
+            \draw[->] (A2) -- (B2);
+            \draw[->] (B2) -- (ACK2);
+
+            \coordinate (A3) at (0, 5.5);
+            \coordinate (B3) at (4, 4.5);
+            \coordinate (ACK3) at (0, 2.5);
+            \draw (A3) node[left] {seq=127, 80 字节};
+            \draw (B3) node[right] {ack=247};
+            \draw[->] (A3) -- (B3);
+            \draw[->] (B3) -- (ACK3);
+
+            \coordinate (H) at (-3.5, 9);
+            \coordinate (L) at (-3.5, 5.5);
+            \draw[-|] (H) edge node[left] {\rotatebox{90}{超时间隔}} (L);
+        \end{tikzpicture}
+    \end{center}
+\end{alphaparts}
+
+\questionnumber{37}
+\question
+\begin{alphaparts}
+    \questionpart GBN\@: 主机 A 总共发送了 9 个报文段, 先顺序发送 1, 2, 3, 4, 5
+    号报文再重传 2, 3, 4, 5 号报文; 主机 B 总共发送了 8 个 ACK, 编号依次为 1, 1,
+    1, 1, 2, 3, 4, 5.
+
+    SR\@: 主机 A 总共发送了 6 个报文段, 先顺序发送 1, 2, 3, 4, 5 号报文再重传 2
+    号报文; 主机 B 总共发送了 5 个 ACK, 编号依次为 1, 3, 4, 5, 2.
+
+    TCP\@: 主机 A 总共发送了 6 个报文段, 先顺序发送 1, 2, 3, 4, 5 号报文再重传 2
+    号报文; 主机 B 总共发送了 5 个 ACK, 编号依次为 2, 2, 2, 2, 6.
+    \questionpart TCP 协议, 因为 TCP 协议有快速重传功能, 不必等待计时器超时.
+\end{alphaparts}
+
+\questionnumber{40}
+\question
+\begin{alphaparts}
+    \questionpart $[1, 6]$ 和 $[23, 26]$.
+    \questionpart $[6, 16]$ 和 $[17, 22]$.
+    \questionpart 3 个冗余 ACK, 因为阻塞窗口大小由 42 减小到了 $42 / 2 + 3 = 24$
+    而不是 1.
+    \questionpart 超时, 因为阻塞窗口大小直接减小到 1 并进入慢启动状态.
+    \questionpart 32, 因为第一次慢启动在阻塞窗口大小为 32 时结束.
+    \questionpart $42 / 2 = 21$.
+    \questionpart $29 / 2 = 14.5$, 舍去小数部分后为 14.
+    \questionpart 第七个. 前六个轮回内发送了 63 个报文段, 第七个轮回发送了 33 个
+    报文段.
+    \questionpart 阻塞窗口长度为 7, ssthresh 为 4.
+    \questionpart 阻塞窗口长度为 4, ssthresh 为 21.
+    \questionpart $1 + 2 + 4 + 8 + 16 + 21 = 52$.
+\end{alphaparts}
+
+\questionnumber{44}
+\question
+\begin{alphaparts}
+    \questionpart 6 RTT\@.
+    \questionpart $(6 + 7 + 8 + 9 + 10 + 11) / 6 = 8.5$ MSS/RTT\@.
+\end{alphaparts}
+
+\question
+\begin{alphaparts}
+    \questionpart 在该周期内, 总共传输的包数量为
+    \begin{equation}
+        \left( \frac{ W }{ 2 }\right) + \left( \frac{ W }{ 2 } + 1\right) +
+        \cdots + W = \sum_{i = 0}^{W / 2} \left( \frac{ W }{ 2 } + i\right)
+        = \frac{ W }{ 2 }\left( \frac{ W }{ 2 } + 1\right) + \frac{ 1 }{ 2 }
+        \times \frac{ W }{ 2 } \left( \frac{ W }{ 2 } + 1\right) =
+        \frac{ 3 }{ 8 }W^{2} + \frac{ 3 }{ 4 } W
+    \end{equation}
+    因为只丢失了一个包, 因此丢包率为
+    \begin{equation}
+        L = \frac{ 1 }{ \dfrac{ 3 }{ 8 }W^{2} + \dfrac{ 3 }{ 4 } W }
+    \end{equation}
+    \questionpart 因为当 $W$ 很大时有 $\dfrac{ 3 }{ 8 }W^{2} \gg
+        \dfrac{ 3 }{ 4 } W$, 所以 $L \approx \dfrac{ 8 }{ 3 W^{2} } \implies
+        W \approx \sqrt{ \dfrac{ 8 }{ 3L } }$. 代入到平均吞吐量公式中得到
+    \begin{equation}
+        \text{平均速率} \approx \frac{ 3 }{ 4 } \times W \times
+        \frac{ \text{MSS} }{ \text{RTT} } =
+        \frac{ 1.22 \cdot \text{MSS} }{ \text{RTT} \cdot \sqrt{L} }
+    \end{equation}
+\end{alphaparts}
+
+\question
+\begin{alphaparts}
+    \questionpart 记窗口长度为 $W$, 则最大吞吐量
+    \begin{equation}
+        M \times \frac{ \text{MSS} }{ \text{RTT} } = M \times
+        \frac{ 1500\text{字节} }{ 150\text{ms} } = 10\text{Mbps}
+    \end{equation}
+    解出 $M$ 为 125.
+    \questionpart 平均窗口长度为 $3 M / 4 = 93.75$, 平均吞吐量为 $3 / 4 \times$
+    10Mbps = 7.5Mbps.
+    \questionpart 若丢包是由三次冗余 ACK 引起的, 则需要 $(125 - 65) \times 0.15
+        = 9$ s. 若丢包是由超时引起的, 因为忽略了慢启动, 需要 $(125 - 62) \times
+        0.15 = 9.45$ s.
+\end{alphaparts}
+
+\end{document}

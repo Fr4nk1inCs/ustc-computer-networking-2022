@@ -1,0 +1,106 @@
+\documentclass[11pt]{homework}
+
+\newcommand{\hwname}{傅申}
+\newcommand{\hwid}{PB20000051}
+\newcommand{\hwtype}{计算机网络作业}
+\newcommand{\hwnum}{7}
+
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{tikzpeople}
+\usetikzlibrary{shapes}
+
+\begin{document}
+\maketitle
+% Your content
+\questionnumber{8}
+\question{
+    \begin{alphaparts}
+        \questionpart{} $n = pq = 55$, $z = (p - 1)(q - 1) = 40$.
+        \questionpart{} 因为 $z = 3 < n$, 且 $e$ 和 $n$ 没有非 1 的公因数.
+        \questionpart{} $d = 27 (\operatorname{mod} 40)$, 因此可选的 $d$ 有 27,
+        67, 107.
+        \questionpart{} 密文 $c = m^{e} \operatorname{mod} n = 512
+            \operatorname{mod} 55 = 17$.
+    \end{alphaparts}
+}
+
+\questionnumber{12}
+\question{
+    \begin{center}
+        \resizebox{.9\textwidth}{!}{
+            \begin{tikzpicture}[>=stealth]
+                \node (s1) at (0, 0) {$S_{1}$};
+                \node[rectangle, draw, fill=black!20, minimum width=2em, minimum height=1em, inner sep=0pt] (m) at (0, 2) {$m$};
+                \node[rectangle, draw] (H1) at (1, 1) {$H(\cdot)$};
+                \node[circle, draw, inner sep=.1em] (plus) at (2, 2) {$+$};
+                \node[rectangle, draw, fill=black!40, minimum width=1em, minimum height=1em] (blk1) at (2, 0.7) {};
+                \node (desc1) at (2, 0.3) {$H(m + S_{1})$};
+                \node[rectangle, draw, fill=black!20, minimum width=2em, minimum height=1em, inner sep=0pt] (m1) at (3, 2.3) {$m$};
+                \node[rectangle, draw, fill=black!40, minimum width=1em, minimum height=1em, right of=m1, node distance=1.5em] (blk2) {};
+                \node (s2) at (5, 1) {$S_{2}$};
+                \node[rectangle, draw] (enc) at (5, 2) {加密算法};
+                \node (blk3) at (6.5, 2.4) {密文};
+                \node[cloud, draw, fill=black!30, inner sep=.1em, aspect=2] (Internet) at (8, 2) {因特网};
+                \node[rectangle, draw] (dec) at (11, 2) {解密算法};
+                \node (s3) at (11, 1) {$S_{2}$};
+                \node[rectangle, draw, fill=black!20, minimum width=2em, minimum height=1em, inner sep=0pt] (m2) at (12.7, 2.3) {$m$};
+                \node[rectangle, draw, fill=black!40, minimum width=1em, minimum height=1em, right of=m2, node distance=1.5em] (blk3) {};
+                \node[rectangle, draw] (H2) at (16, 3) {$H(\cdot)$};
+                \node[rectangle, draw, fill=black!20, minimum width=2em, minimum height=1em, inner sep=0pt] (m3) at (14.5, 2.5) {$m$};
+                \node (s4) at (14.5, 3.2) {$S_{1}$};
+                \node[rectangle, draw, fill=black!40, minimum width=1em, minimum height=1em] at (14.3, 1.3) {};
+                \node[rectangle, draw, fill=black!40, minimum width=1em, minimum height=1em] at (17.3, 1) {};
+                \node[rectangle, draw, fill=black!40, minimum width=1em, minimum height=1em] at (17.3, 3) {};
+                \node[diamond, draw, fill=black!30, inner sep=.1em] (cmp) at (17, 2) {比较};
+                \draw[-] (s1) -- (0, 0.9);
+                \draw[-] (m) -- (0, 1.1);
+                \draw[->] (0, 0.9) -- (0.5, 0.9);
+                \draw[->] (0, 1.1) -- (0.5, 1.1);
+                \draw[-] (H1) -- (2, 1);
+                \draw[->] (2, 1) -- (plus);
+                \draw[->] (m) -- (plus);
+                \draw[->] (plus) -- (enc);
+                \draw[->] (s2) -- (enc);
+                \draw[->] (enc) -- (Internet);
+                \draw[->] (Internet) -- (dec);
+                \draw[->] (s3) -- (dec);
+                \draw[-] (dec) -- (14, 2);
+                \draw[-] (14, 2) -- (14, 2.8);
+                \draw[-] (14, 2) -- (14, 1);
+                \draw[->] (14, 2.8) -- (15.5, 2.8);
+                \draw[->] (s4) -- (15.5, 3.2);
+                \draw[-](H2) -- (17, 3);
+                \draw[-] (14, 1) -- (17, 1);
+                \draw[->] (17, 3) -- (cmp);
+                \draw[->] (17, 1) -- (cmp);
+            \end{tikzpicture}
+        }
+    \end{center}
+}
+
+\questionnumber{18}
+\question{
+    \begin{alphaparts}
+        \questionpart{} 因为 Alice 不具有公钥私钥对, 所以 Bob 无法验证 Alice 创
+        建的报文.
+        \questionpart{} 可以, 如下
+        \begin{center}
+            \begin{tikzpicture}[>=stealth]
+                \node[alice] at (0, 0) {Alice};
+                \node (src) at (1, 0) {$m$};
+                \node[rectangle, draw] (pub) at (3, 0) {$K_{B}^{+}(\cdot)$};
+                \node at (5, -0.3) {$K_{B}^{+}(m)$};
+                \node[cloud, draw, fill=black!30, aspect=2] (Internet) at (7, 0) {因特网};
+                \node[rectangle, draw] (pri) at (10, 0) {$K_{B}^{-}(\cdot)$};
+                \node (dst) at (12, 0) {$m$};
+                \node[bob] at (13, 0) {Bob};
+                \draw[->] (src) -- (pub);
+                \draw[->] (pub) -- (Internet);
+                \draw[->] (Internet) -- (pri);
+                \draw[->] (pri) -- (dst);
+            \end{tikzpicture}
+        \end{center}
+    \end{alphaparts}
+}
+\end{document}

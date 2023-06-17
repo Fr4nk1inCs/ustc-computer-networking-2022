@@ -1,0 +1,53 @@
+\documentclass[11pt]{homework}
+
+\newcommand{\hwname}{傅申}
+\newcommand{\hwid}{PB20000051}
+\newcommand{\hwtype}{计算机网络作业}
+\newcommand{\hwnum}{7}
+
+\usepackage{enumerate}
+
+\begin{document}
+\maketitle
+% Your content
+\renewcommand{\questiontype}[0]{R}
+\questionnumber{7}
+\question{
+    当无线 LAN 中某站点发送一个帧时, 该帧可能由于多种原因不能无损地到达目的站点,
+    需要使用链路层确认来处理这种不可忽视的情况.
+}
+
+\questionnumber{11}
+\question{
+    发生切换时, 终端要关联到新的 AP 上, 交换机的转发表也需要更新. 交换机受到带有
+    哄骗性的 MAC 地址的帧时, 会学习到终端对应的新的表项, 避免切换后发生丢包.
+}
+
+\renewcommand{\questiontype}[0]{P}
+\questionnumber{5}
+\question{
+    \begin{alphaparts}
+        \questionpart{} 802.11 协议不会崩溃, 因为有碰撞避免机制.
+
+        两个站点试图同时传输时, 它们都会先监听信道, 若信道忙, 则二者均随机回退一
+        段时间; 若信道空闲, 则二者同时发送 RTS 帧, 产生冲突, 不成功的发送方随机
+        回退一段时间.
+        \questionpart{} 因为信道 1 和 11 之间不重叠, 因此两个站点之间不会出现碰
+        撞.
+    \end{alphaparts}
+}
+
+\questionnumber{6}
+\question{
+    设计者是基于公平性的考虑的. 若一个站点 A 连续有多个帧要发送, 且信道空闲, 那
+    么它将开始发送帧, 这时若其他站点 B 也尝试发送, 会监听到信道忙而随机回退.
+    \begin{itemize}[topsep=0pt, itemsep=0pt, parsep=0pt]
+        \item 若 A 发送完成后从第一步开始协议, 因为此时 B 甚至其他所有站点都处于
+              随机回退状态, 则 A 能继续发送帧, 从而导致 B 需要等待 A 的所有帧发
+              送完成才能发送自己的帧, 导致不公平性.
+        \item 但是若 A 发送完成后从第二步开始协议, 且它会在更大范围内选择随机回
+              退值, 则 B 更有可能在 A 的随机回退时间内恢复并发送帧, 实现公平性.
+    \end{itemize}
+}
+
+\end{document}

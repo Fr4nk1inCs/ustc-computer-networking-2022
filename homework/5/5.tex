@@ -1,0 +1,115 @@
+\documentclass[11pt]{homework}
+
+\newcommand{\hwname}{傅申}
+\newcommand{\hwid}{PB20000051}
+\newcommand{\hwtype}{计算机网络作业}
+\newcommand{\hwnum}{5}
+
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows}
+\begin{document}
+\maketitle
+% Your content
+\questionnumber{3}
+\question{
+    \begin{center}
+        \begin{tabular}{cccccccc}
+            \toprule
+            步骤 & $N'$      & $D(y), p(y)$ & $D(z), p(z)$ & $D(v), p(v)$ & $D(w), p(w)$ & $D(t), p(t)$ & $D(u), p(u)$ \\ \midrule
+            0    & $x$       & 6, $x$       & 8, $x$       & 3, $x$       & 6, $x$       & $\infty$     & $\infty$     \\
+            1    & $xv$      & 6, $x$       & 8, $x$       & 3, $x$       & 6, $x$       & 7, $v$       & 6, $v$       \\
+            2    & $xvy$     & 6, $x$       & 8, $x$       & 3, $x$       & 6, $x$       & 7, $v$       & 6, $v$       \\
+            3    & $xvyw$    & 6, $x$       & 8, $x$       & 3, $x$       & 6, $x$       & 7, $v$       & 6, $v$       \\
+            4    & $xvywu$   & 6, $x$       & 8, $x$       & 3, $x$       & 6, $x$       & 7, $v$       & 6, $v$       \\
+            5    & $xvywut$  & 6, $x$       & 8, $x$       & 3, $x$       & 6, $x$       & 7, $v$       & 6, $v$       \\
+            6    & $xvywutz$ & 6, $x$       & 8, $x$       & 3, $x$       & 6, $x$       & 7, $v$       & 6, $v$       \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+}
+
+\questionnumber{7}
+\question{
+    \begin{alphaparts}
+        \questionpart{} $D_{x}(w) = 2$, $D_{x}(y) = 4$, $D_{x}(u) = 7$.
+        \questionpart{}\label{prob:7.b} 当 $c(x, y)$ 变化至小于 1 时, $c(x, y) +
+            D_{y}(u) < c(x, w) + D_{w}(u) = 7$, $D_{x}(u)$ 发生改变, $x$ 将通知
+        其邻居有一条通向 $u$ 的新最低开销路径.
+
+        而 $c(x, w)$ 不论如何变化都会影响到 $D_{x}(u)$, 从而导致 $x$ 向邻居通知.
+
+        \questionpart{} 由~\ref{prob:7.b} 可知 $c(x, y)$ 变化至大于 1 时不会导致
+        $x$ 向邻居通知其邻居有一条通向 $u$ 的新最低开销路径.
+    \end{alphaparts}
+}
+
+\questionnumber{8}
+\question{
+    \begin{center}
+        \begin{tabular}{cccc}
+            \toprule
+            步骤 & 节点 $x$ 的转发表                      & 节点 $y$ 的转发表 & 节点 $z$ 的转发表 \\ \midrule
+            0    & $ \begin{array}{c|ccc}
+                               & x      & y      & z      \\ \hline
+                             x & 0      & 3      & 4      \\
+                             y & \infty & \infty & \infty \\
+                             z & \infty & \infty & \infty
+                         \end{array} $
+                 & $ \begin{array}{c|ccc}
+                               & x      & y      & z      \\ \hline
+                             x & \infty & \infty & \infty \\
+                             y & 3      & 0      & 6      \\
+                             z & \infty & \infty & \infty
+                         \end{array} $
+                 & $ \begin{array}{c|ccc}
+                               & x      & y      & z      \\ \hline
+                             x & \infty & \infty & \infty \\
+                             y & \infty & \infty & \infty \\
+                             z & 4      & 6      & 0
+                         \end{array} $                                        \\
+            1    & $ \begin{array}{c|ccc}
+                               & x & y & z \\ \hline
+                             x & 0 & 3 & 4 \\
+                             y & 3 & 0 & 6 \\
+                             z & 4 & 6 & 0
+                         \end{array} $
+                 & $ \begin{array}{c|ccc}
+                               & x & y & z \\ \hline
+                             x & 0 & 3 & 4 \\
+                             y & 3 & 0 & 6 \\
+                             z & 4 & 6 & 0
+                         \end{array} $
+                 & $ \begin{array}{c|ccc}
+                               & x & y & z \\ \hline
+                             x & 0 & 3 & 4 \\
+                             y & 3 & 0 & 6 \\
+                             z & 4 & 6 & 0
+                         \end{array} $                                                       \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+}
+
+\questionnumber{14}
+\question{
+    \begin{alphaparts}
+        \questionpart{} 3c 收到的 BGP 报文来自 AS4, 跨越了 2 个 AS, 所以为
+        eBGP\@.
+        \questionpart{} 3a 收到的 BGP 报文来自 AS3 内部, 所以为 iBGP\@.
+        \questionpart{} 1c 收到的 BGP 报文来自 AS3, 跨越了 2 个 AS, 所以为
+        eBGP\@.
+        \questionpart{} 1d 收到的 BGP 报文来自 AS1 内部, 所以为 iBGP\@.
+    \end{alphaparts}
+}
+
+\questionnumber{15}
+\question{
+    \begin{alphaparts}
+        \questionpart{} $I_{1}$, 因为它通向前往网关路由器 1c 的最短路径.
+        \questionpart{} $I_{2}$, 因为两条路径的 AS-PATH 相同, 但是 $I_{2}$ 通向前往
+        更近的 NEXT-HOP (2a) 的路径.
+        \questionpart{} $I_{1}$, 因为它通向 AS-PATH 更短的路径.
+    \end{alphaparts}
+}
+\end{document}
